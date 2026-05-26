@@ -1,0 +1,33 @@
+# Python 虚拟环境(uv 自动建 · 不提交)
+.venv/
+venv/
+env/
+
+# Python 字节码缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 输出物 · 图 / 日志 / 临时
+figures/
+*.log
+*.tmp
+
+# 学生本地实验文件(段 5/6 试改的 · 不污染历史)
+_scratch/
+_experiments/
+
+# 但保留 · 模板用法说明
+!README.md
+!materials/README.md
