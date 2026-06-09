@@ -15,6 +15,26 @@ def loads(text: str) -> dict:
         if not line:
             continue
 
+        if line.startswith("[[") and line.endswith("]]"):
+            section = line[2:-2].strip()
+            if not section:
+                raise TOMLDecodeError(f"第 {line_no} 行：空数组表名")
+            current = data
+            parts = [part.strip() for part in section.split(".")]
+            for part in parts[:-1]:
+                if not part:
+                    raise TOMLDecodeError(f"第 {line_no} 行：空 section 名")
+                current = current.setdefault(part, {})
+            table_name = parts[-1]
+            if not table_name:
+                raise TOMLDecodeError(f"第 {line_no} 行：空数组表名")
+            tables = current.setdefault(table_name, [])
+            if not isinstance(tables, list):
+                raise TOMLDecodeError(f"第 {line_no} 行：{section!r} 已经是普通表")
+            current = {}
+            tables.append(current)
+            continue
+
         if line.startswith("[") and line.endswith("]"):
             section = line[1:-1].strip()
             if not section:

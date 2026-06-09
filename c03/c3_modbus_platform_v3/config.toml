@@ -1,29 +1,16 @@
-# config.toml · 一份配置,server / client 都读它
+# config.toml · v3 多箱版
 [server]
-host = "127.0.0.1"     # 中心改成老师板书的 IP
-port = 5020
 bind = "0.0.0.0"
-device_id = 1
+port = 5020
 
 [loop]
 dt_s = 0.1
 
-[plant]
-type = "thermal"
-params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 25.0 }
-
-[sensor]
-type = "SimulatedTemperatureSensor"
-params = { name = "t1", noise_std = 0.0 }
-
-[actuator]
-type = "SimulatedHeaterActuator"
-params = { name = "heater1", channel = "heat_power", max_power = 200.0 }
-
-[sensor_endpoint]
-type = "ModbusSensorEndpoint"
-params = { name = "temp_ep", register_address = 0, device_id = 1 }
-
-[actuator_endpoint]
-type = "ModbusActuatorEndpoint"
-params = { name = "heater_ep", coil_address = 0, device_id = 1 }
+[[box]]
+name = "box-1"
+device_id = 1
+plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 21.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t1", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h1", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep1", register_address = 0 } }
+actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep1", coil_address = 0 } }
