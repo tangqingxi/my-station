@@ -1,0 +1,13 @@
+# client_config.toml · 你自己改这份 · 不再共享 server 的 config.toml
+[server]
+host = "127.0.0.1"     # 中心改成老师板书的 IP
+port = 5020
+
+[box]
+device_id = 2            # ← 改这一行选你要控制哪台箱
+register_address = 0
+coil_address = 0
+
+# 可选:从 server banner 抄来本箱物理参数(50 箱版 t_env = 20 + device_id)
+plant    = { params = { c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 22.0 } }
+actuator = { params = { max_power = 200.0 } }
