@@ -1,10 +1,10 @@
 # client_config.toml · 你自己改这份 · 不再共享 server 的 config.toml
 [server]
-host = "127.0.0.1"     # 中心改成老师板书的 IP
+host = "192.168.8.101"     # 中心改成老师板书的 IP
 port = 5020
 
 [box]
-device_id = 2            # ← 改这一行选你要控制哪台箱
+device_id = 8            # ← 改这一行选你要控制哪台箱
 register_address = 0
 coil_address = 0
 
