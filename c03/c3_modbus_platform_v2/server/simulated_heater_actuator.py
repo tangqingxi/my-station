@@ -1,9 +1,11 @@
 # server/simulated_heater_actuator.py · 加热器仿真执行器 · 限幅在这里做
 
 from core.base_plant import BasePlant
+from core.registry import register
 from core.simulated_base_actuator import SimulatedBaseActuator
 
 
+@register("SimulatedHeaterActuator")
 class SimulatedHeaterActuator(SimulatedBaseActuator):
     def __init__(self, name="heater1", *, channel="heat_power", max_power=200.0, min_power=0.0):
         super().__init__(name, channel)

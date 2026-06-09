@@ -3,8 +3,10 @@
 #   c_heat=15, eta=0.95, r_th=0.40, t_env=25 → 满功率 200W 稳态 ≈ 101°C(τ=6s)
 
 from core.base_plant import BasePlant
+from core.registry import register
 
 
+@register("thermal")
 class ThermalPlant(BasePlant):
     SIGNATURE = {
         "state": {"temperature": {"unit": "C", "range": [0.0, 200.0]}},
