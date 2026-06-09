@@ -19,3 +19,11 @@ params = { name = "t1", noise_std = 0.0 }
 [actuator]
 type = "SimulatedHeaterActuator"
 params = { name = "heater1", channel = "heat_power", max_power = 200.0 }
+
+[sensor_endpoint]
+type = "ModbusSensorEndpoint"
+params = { name = "temp_ep", register_address = 0, device_id = 1 }
+
+[actuator_endpoint]
+type = "ModbusActuatorEndpoint"
+params = { name = "heater_ep", coil_address = 0, device_id = 1 }
