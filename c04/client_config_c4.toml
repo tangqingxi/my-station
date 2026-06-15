@@ -4,6 +4,7 @@ port = 1883
 
 [loop]
 dt_s = 0.5
+oversample = 5
 
 [box]
 device_id = 1

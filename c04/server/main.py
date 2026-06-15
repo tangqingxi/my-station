@@ -73,6 +73,8 @@ def main(cfg_path: Path) -> None:
     dt = float(cfg.get("loop", {}).get("dt_s", 0.1))
     emit_dt = float(cfg.get("loop", {}).get("emit_dt_s", dt))
     emit_every = max(1, round(emit_dt / dt))
+    sample_dt = float(cfg.get("loop", {}).get("sample_dt_s", emit_dt))
+    sample_every = max(1, round(sample_dt / dt))
     dash = BoxDashboard(station_id="my-station")
     dash_host = sc.get("dashboard_host", "127.0.0.1")
     dash_port = int(sc.get("dashboard_port", 5400))
@@ -84,7 +86,10 @@ def main(cfg_path: Path) -> None:
         print(format_box_summary(b["_cfg"]))
     print("=" * 70)
     print(f"[server] 看板(真值 vs 加噪):http://{dash_host}:{dash_port}/  ← 浏览器打开,下拉选箱")
-    print(f"[server] {len(boxes)} 台箱已就绪 · 主循环 dt = {dt} s · emit_dt = {emit_dt} s · 等待客户端…")
+    print(
+        f"[server] {len(boxes)} 台箱已就绪 · 主循环 dt = {dt} s · "
+        f"sample_dt = {sample_dt} s · emit_dt = {emit_dt} s · 等待客户端…"
+    )
 
     _ctrlc = {"n": 0}
     def _on_sigint(_s, _f):
@@ -96,8 +101,10 @@ def main(cfg_path: Path) -> None:
 
     step_i = 0
     u_now: dict[str, float] = {}
+    noisy_now: dict[str, float | None] = {b["name"]: None for b in boxes}
     try:
         while True:
+            sample = (step_i % sample_every == 0)
             emit = (step_i % emit_every == 0)
             for b in boxes:
                 try:
@@ -106,11 +113,16 @@ def main(cfg_path: Path) -> None:
                         b["actuator"].apply(b["plant"], cmd)
                         u_now[b["name"]] = _command_power(b["actuator"], cmd)
                     b["plant"].step(dt)
-                    if emit:
+                    if sample:
                         noisy = b["sensor"].read(b["plant"])
                         b["sep"].update(noisy)
+                        noisy_now[b["name"]] = noisy
+                    if emit:
                         true_v = b["plant"].get_state()["temperature"]
-                        dash.record(b["name"], true_v, noisy, u_now.get(b["name"], 0.0))
+                        noisy0 = noisy_now[b["name"]]
+                        if noisy0 is None:
+                            noisy0 = b["sensor"].read(b["plant"])
+                        dash.record(b["name"], true_v, noisy0, u_now.get(b["name"], 0.0))
                 except Exception as e:
                     logging.getLogger("box").error("%s (device_id=%d) step 异常: %s",
                                                    b["name"], b["device_id"], e)

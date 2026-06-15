@@ -7,6 +7,7 @@ port = 5020
 [loop]
 dt_s = 0.1
 emit_dt_s = 0.5
+sample_dt_s = 0.1
 
 [[box]]
 name = "box-1"

@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+from collections import deque
 import sys
 import tomllib
 from pathlib import Path
@@ -73,10 +74,21 @@ def main(cfg_path: Path) -> None:
 
     sp_cfg = cfg.get("signal_processor")
     chain = None
+    inner = EndpointSensor(sensor_ep)
     if sp_cfg is not None:
         processor = build(sp_cfg)
         dt_filter = float(cfg.get("loop", {}).get("dt_s", 0.5))
-        chain = FilteredSensor(EndpointSensor(sensor_ep), processor, dt_filter)
+        chain = FilteredSensor(inner, processor, dt_filter)
+    oversample = max(1, int(cfg.get("loop", {}).get("oversample", 1)))
+    dt_ctrl = float(cfg.get("loop", {}).get("dt_s", 0.5))
+    sub_dt = dt_ctrl / oversample
+    sub_buf: deque[float] = deque(maxlen=oversample)
+    subtick = {"n": 0}
+    denoise = chain is not None or oversample > 1
+
+    def _median(buf) -> float:
+        s = sorted(buf)
+        return float(s[len(s) // 2])
 
     # 绘图状态
     ts: list[int] = []
@@ -91,11 +103,12 @@ def main(cfg_path: Path) -> None:
     else:
         fig, ax = plt.subplots(figsize=(8.0, 5.0))
         fig.subplots_adjust(left=0.12, right=0.95, top=0.90, bottom=0.18)
-    if chain is not None:
+    if denoise:
+        filt_label = type(chain.processor).__name__ if chain is not None else f"median x{oversample}"
         line, = ax.plot([], [], "-", color="#bbbbbb", linewidth=0.8, label="noisy(原始)")
         line_filt, = ax.plot(
             [], [], "b-", linewidth=1.6,
-            label=f"filtered({type(chain.processor).__name__})",
+            label=f"filtered({filt_label})",
         )
         ax.legend(loc="upper right", fontsize=8)
     else:
@@ -124,7 +137,18 @@ def main(cfg_path: Path) -> None:
 
     def on_tick(_frame):
         try:
-            if chain is not None:
+            if oversample > 1:
+                sub_buf.append(inner.read())
+                subtick["n"] += 1
+                if subtick["n"] % oversample != 0:
+                    return (line,) if line_filt is None else (line, line_filt)
+                raw = sub_buf[-1]
+                measure = _median(sub_buf)
+                filt = chain.processor.process(measure, dt_ctrl) if chain is not None else measure
+                if chain is not None:
+                    chain.last_raw = float(raw)
+                    chain.last_filtered = float(filt)
+            elif chain is not None:
                 filt = chain.read()
                 raw = chain.last_raw
             else:
@@ -193,7 +217,7 @@ def main(cfg_path: Path) -> None:
     btn = Button(bax, "开 / 关加热器")
     btn.on_clicked(on_toggle)
 
-    ani = FuncAnimation(fig, on_tick, interval=500, cache_frame_data=False)
+    ani = FuncAnimation(fig, on_tick, interval=max(1, int(sub_dt * 1000)), cache_frame_data=False)
     plt.show()
     sensor_ep.stop()
     actuator_ep.stop()

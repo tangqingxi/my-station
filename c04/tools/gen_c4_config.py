@@ -21,6 +21,7 @@ port = 5020
 [loop]
 dt_s = 0.1
 emit_dt_s = {emit}
+sample_dt_s = 0.1
 """
 
 
