@@ -38,6 +38,8 @@ if str(ROOT) not in sys.path:
 # 注册子类(让 REGISTRY 填满)
 import endpoints.modbus_sensor_endpoint  # noqa: F401
 import endpoints.modbus_actuator_endpoint  # noqa: F401
+import endpoints.mqtt_sensor_endpoint  # noqa: F401
+import endpoints.mqtt_actuator_endpoint  # noqa: F401
 
 from core.factory import build
 from client.box_context import ClientBoxContext

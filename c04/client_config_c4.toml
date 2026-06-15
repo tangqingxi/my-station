@@ -1,0 +1,13 @@
+[server]
+host = "127.0.0.1"
+port = 1883
+
+[loop]
+dt_s = 0.5
+
+[box]
+device_id = 1
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep", topic = "my-station/sensor/box-1" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep", topic = "my-station/actuator/box-1/cmd" } }
+plant    = { params = { c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 21.0 } }
+actuator = { params = { max_power = 200.0 } }

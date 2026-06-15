@@ -12,6 +12,8 @@ import server.simulated_temperature_sensor        # noqa
 import server.simulated_heater_actuator           # noqa
 import endpoints.modbus_sensor_endpoint           # noqa
 import endpoints.modbus_actuator_endpoint         # noqa
+import endpoints.mqtt_sensor_endpoint             # noqa
+import endpoints.mqtt_actuator_endpoint           # noqa
 
 from core.factory import build, build_plant, build_sensor, build_actuator
 from server.thermal_plant import format_box_summary

@@ -1,0 +1,410 @@
+# config_c4.toml · C4 演示 server 配置 · 50 箱 · MQTT 传输 · 无噪
+# 由 tools/gen_c4_config.py 生成；要改规模或噪声，请改脚本后重跑。
+[server]
+bind = "0.0.0.0"
+port = 5020
+
+[loop]
+dt_s = 0.1
+emit_dt_s = 0.5
+
+[[box]]
+name = "box-1"
+device_id = 1
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 21.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t1", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h1", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep1", topic = "my-station/sensor/box-1" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep1", topic = "my-station/actuator/box-1/cmd" } }
+[[box]]
+name = "box-2"
+device_id = 2
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 22.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t2", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h2", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep2", topic = "my-station/sensor/box-2" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep2", topic = "my-station/actuator/box-2/cmd" } }
+[[box]]
+name = "box-3"
+device_id = 3
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 23.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t3", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h3", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep3", topic = "my-station/sensor/box-3" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep3", topic = "my-station/actuator/box-3/cmd" } }
+[[box]]
+name = "box-4"
+device_id = 4
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 24.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t4", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h4", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep4", topic = "my-station/sensor/box-4" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep4", topic = "my-station/actuator/box-4/cmd" } }
+[[box]]
+name = "box-5"
+device_id = 5
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 25.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t5", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h5", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep5", topic = "my-station/sensor/box-5" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep5", topic = "my-station/actuator/box-5/cmd" } }
+[[box]]
+name = "box-6"
+device_id = 6
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 26.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t6", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h6", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep6", topic = "my-station/sensor/box-6" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep6", topic = "my-station/actuator/box-6/cmd" } }
+[[box]]
+name = "box-7"
+device_id = 7
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 27.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t7", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h7", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep7", topic = "my-station/sensor/box-7" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep7", topic = "my-station/actuator/box-7/cmd" } }
+[[box]]
+name = "box-8"
+device_id = 8
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 28.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t8", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h8", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep8", topic = "my-station/sensor/box-8" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep8", topic = "my-station/actuator/box-8/cmd" } }
+[[box]]
+name = "box-9"
+device_id = 9
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 29.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t9", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h9", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep9", topic = "my-station/sensor/box-9" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep9", topic = "my-station/actuator/box-9/cmd" } }
+[[box]]
+name = "box-10"
+device_id = 10
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 30.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t10", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h10", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep10", topic = "my-station/sensor/box-10" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep10", topic = "my-station/actuator/box-10/cmd" } }
+[[box]]
+name = "box-11"
+device_id = 11
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 31.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t11", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h11", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep11", topic = "my-station/sensor/box-11" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep11", topic = "my-station/actuator/box-11/cmd" } }
+[[box]]
+name = "box-12"
+device_id = 12
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 32.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t12", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h12", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep12", topic = "my-station/sensor/box-12" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep12", topic = "my-station/actuator/box-12/cmd" } }
+[[box]]
+name = "box-13"
+device_id = 13
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 33.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t13", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h13", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep13", topic = "my-station/sensor/box-13" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep13", topic = "my-station/actuator/box-13/cmd" } }
+[[box]]
+name = "box-14"
+device_id = 14
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 34.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t14", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h14", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep14", topic = "my-station/sensor/box-14" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep14", topic = "my-station/actuator/box-14/cmd" } }
+[[box]]
+name = "box-15"
+device_id = 15
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 35.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t15", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h15", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep15", topic = "my-station/sensor/box-15" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep15", topic = "my-station/actuator/box-15/cmd" } }
+[[box]]
+name = "box-16"
+device_id = 16
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 36.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t16", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h16", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep16", topic = "my-station/sensor/box-16" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep16", topic = "my-station/actuator/box-16/cmd" } }
+[[box]]
+name = "box-17"
+device_id = 17
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 37.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t17", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h17", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep17", topic = "my-station/sensor/box-17" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep17", topic = "my-station/actuator/box-17/cmd" } }
+[[box]]
+name = "box-18"
+device_id = 18
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 38.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t18", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h18", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep18", topic = "my-station/sensor/box-18" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep18", topic = "my-station/actuator/box-18/cmd" } }
+[[box]]
+name = "box-19"
+device_id = 19
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 39.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t19", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h19", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep19", topic = "my-station/sensor/box-19" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep19", topic = "my-station/actuator/box-19/cmd" } }
+[[box]]
+name = "box-20"
+device_id = 20
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 40.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t20", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h20", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep20", topic = "my-station/sensor/box-20" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep20", topic = "my-station/actuator/box-20/cmd" } }
+[[box]]
+name = "box-21"
+device_id = 21
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 41.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t21", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h21", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep21", topic = "my-station/sensor/box-21" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep21", topic = "my-station/actuator/box-21/cmd" } }
+[[box]]
+name = "box-22"
+device_id = 22
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 42.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t22", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h22", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep22", topic = "my-station/sensor/box-22" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep22", topic = "my-station/actuator/box-22/cmd" } }
+[[box]]
+name = "box-23"
+device_id = 23
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 43.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t23", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h23", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep23", topic = "my-station/sensor/box-23" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep23", topic = "my-station/actuator/box-23/cmd" } }
+[[box]]
+name = "box-24"
+device_id = 24
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 44.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t24", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h24", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep24", topic = "my-station/sensor/box-24" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep24", topic = "my-station/actuator/box-24/cmd" } }
+[[box]]
+name = "box-25"
+device_id = 25
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 45.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t25", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h25", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep25", topic = "my-station/sensor/box-25" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep25", topic = "my-station/actuator/box-25/cmd" } }
+[[box]]
+name = "box-26"
+device_id = 26
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 46.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t26", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h26", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep26", topic = "my-station/sensor/box-26" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep26", topic = "my-station/actuator/box-26/cmd" } }
+[[box]]
+name = "box-27"
+device_id = 27
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 47.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t27", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h27", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep27", topic = "my-station/sensor/box-27" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep27", topic = "my-station/actuator/box-27/cmd" } }
+[[box]]
+name = "box-28"
+device_id = 28
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 48.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t28", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h28", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep28", topic = "my-station/sensor/box-28" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep28", topic = "my-station/actuator/box-28/cmd" } }
+[[box]]
+name = "box-29"
+device_id = 29
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 49.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t29", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h29", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep29", topic = "my-station/sensor/box-29" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep29", topic = "my-station/actuator/box-29/cmd" } }
+[[box]]
+name = "box-30"
+device_id = 30
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 50.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t30", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h30", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep30", topic = "my-station/sensor/box-30" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep30", topic = "my-station/actuator/box-30/cmd" } }
+[[box]]
+name = "box-31"
+device_id = 31
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 51.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t31", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h31", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep31", topic = "my-station/sensor/box-31" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep31", topic = "my-station/actuator/box-31/cmd" } }
+[[box]]
+name = "box-32"
+device_id = 32
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 52.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t32", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h32", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep32", topic = "my-station/sensor/box-32" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep32", topic = "my-station/actuator/box-32/cmd" } }
+[[box]]
+name = "box-33"
+device_id = 33
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 53.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t33", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h33", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep33", topic = "my-station/sensor/box-33" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep33", topic = "my-station/actuator/box-33/cmd" } }
+[[box]]
+name = "box-34"
+device_id = 34
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 54.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t34", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h34", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep34", topic = "my-station/sensor/box-34" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep34", topic = "my-station/actuator/box-34/cmd" } }
+[[box]]
+name = "box-35"
+device_id = 35
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 55.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t35", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h35", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep35", topic = "my-station/sensor/box-35" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep35", topic = "my-station/actuator/box-35/cmd" } }
+[[box]]
+name = "box-36"
+device_id = 36
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 56.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t36", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h36", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep36", topic = "my-station/sensor/box-36" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep36", topic = "my-station/actuator/box-36/cmd" } }
+[[box]]
+name = "box-37"
+device_id = 37
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 57.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t37", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h37", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep37", topic = "my-station/sensor/box-37" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep37", topic = "my-station/actuator/box-37/cmd" } }
+[[box]]
+name = "box-38"
+device_id = 38
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 58.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t38", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h38", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep38", topic = "my-station/sensor/box-38" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep38", topic = "my-station/actuator/box-38/cmd" } }
+[[box]]
+name = "box-39"
+device_id = 39
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 59.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t39", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h39", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep39", topic = "my-station/sensor/box-39" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep39", topic = "my-station/actuator/box-39/cmd" } }
+[[box]]
+name = "box-40"
+device_id = 40
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 60.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t40", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h40", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep40", topic = "my-station/sensor/box-40" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep40", topic = "my-station/actuator/box-40/cmd" } }
+[[box]]
+name = "box-41"
+device_id = 41
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 61.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t41", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h41", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep41", topic = "my-station/sensor/box-41" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep41", topic = "my-station/actuator/box-41/cmd" } }
+[[box]]
+name = "box-42"
+device_id = 42
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 62.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t42", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h42", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep42", topic = "my-station/sensor/box-42" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep42", topic = "my-station/actuator/box-42/cmd" } }
+[[box]]
+name = "box-43"
+device_id = 43
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 63.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t43", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h43", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep43", topic = "my-station/sensor/box-43" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep43", topic = "my-station/actuator/box-43/cmd" } }
+[[box]]
+name = "box-44"
+device_id = 44
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 64.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t44", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h44", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep44", topic = "my-station/sensor/box-44" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep44", topic = "my-station/actuator/box-44/cmd" } }
+[[box]]
+name = "box-45"
+device_id = 45
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 65.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t45", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h45", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep45", topic = "my-station/sensor/box-45" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep45", topic = "my-station/actuator/box-45/cmd" } }
+[[box]]
+name = "box-46"
+device_id = 46
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 66.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t46", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h46", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep46", topic = "my-station/sensor/box-46" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep46", topic = "my-station/actuator/box-46/cmd" } }
+[[box]]
+name = "box-47"
+device_id = 47
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 67.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t47", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h47", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep47", topic = "my-station/sensor/box-47" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep47", topic = "my-station/actuator/box-47/cmd" } }
+[[box]]
+name = "box-48"
+device_id = 48
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 68.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t48", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h48", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep48", topic = "my-station/sensor/box-48" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep48", topic = "my-station/actuator/box-48/cmd" } }
+[[box]]
+name = "box-49"
+device_id = 49
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 69.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t49", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h49", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep49", topic = "my-station/sensor/box-49" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep49", topic = "my-station/actuator/box-49/cmd" } }
+[[box]]
+name = "box-50"
+device_id = 50
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 70.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t50", noise_std = 0.0 } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h50", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep50", topic = "my-station/sensor/box-50" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep50", topic = "my-station/actuator/box-50/cmd" } }
