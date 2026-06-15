@@ -17,6 +17,7 @@ import endpoints.mqtt_sensor_endpoint             # noqa
 import endpoints.mqtt_actuator_endpoint           # noqa
 
 from core.factory import build, build_plant, build_sensor, build_actuator
+from server.box_dashboard import BoxDashboard, serve as serve_dashboard
 from server.thermal_plant import format_box_summary
 from endpoints.modbus_sim_gateway import ModbusSimGateway
 from server.box_context import ServerBoxContext
@@ -40,6 +41,18 @@ def assemble_box(box_cfg: dict, gateway) -> dict:
             "uses_modbus": ctx.uses_modbus, "_cfg": box_cfg}
 
 
+def _command_power(actuator, cmd) -> float:
+    """把当前命令换算成看板功率线；只作显示，不参与控制闭环。"""
+    min_power = float(getattr(actuator, "_min", 0.0))
+    max_power = float(getattr(actuator, "_max", 0.0))
+    if isinstance(cmd, bool):
+        return max_power if cmd else min_power
+    try:
+        return max(min_power, min(max_power, float(cmd)))
+    except (TypeError, ValueError):
+        return min_power
+
+
 def main(cfg_path: Path) -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s [%(name)s] %(message)s")
     logging.getLogger("pymodbus").setLevel(logging.ERROR)
@@ -58,12 +71,20 @@ def main(cfg_path: Path) -> None:
     gateway.start()
 
     dt = float(cfg.get("loop", {}).get("dt_s", 0.1))
+    emit_dt = float(cfg.get("loop", {}).get("emit_dt_s", dt))
+    emit_every = max(1, round(emit_dt / dt))
+    dash = BoxDashboard(station_id="my-station")
+    dash_host = sc.get("dashboard_host", "127.0.0.1")
+    dash_port = int(sc.get("dashboard_port", 5400))
+    serve_dashboard(dash, host=dash_host, port=dash_port)
+
     print("=" * 70)
     print(gateway.status_line())
     for b in boxes:
         print(format_box_summary(b["_cfg"]))
     print("=" * 70)
-    print(f"[server] {len(boxes)} 台箱已就绪 · 主循环 dt = {dt} s · 等待客户端…")
+    print(f"[server] 看板(真值 vs 加噪):http://{dash_host}:{dash_port}/  ← 浏览器打开,下拉选箱")
+    print(f"[server] {len(boxes)} 台箱已就绪 · 主循环 dt = {dt} s · emit_dt = {emit_dt} s · 等待客户端…")
 
     _ctrlc = {"n": 0}
     def _on_sigint(_s, _f):
@@ -73,18 +94,27 @@ def main(cfg_path: Path) -> None:
         os._exit(0)
     signal.signal(signal.SIGINT, _on_sigint)
 
+    step_i = 0
+    u_now: dict[str, float] = {}
     try:
         while True:
+            emit = (step_i % emit_every == 0)
             for b in boxes:
                 try:
                     cmd = b["aep"].poll_command()
                     if cmd is not None:
                         b["actuator"].apply(b["plant"], cmd)
+                        u_now[b["name"]] = _command_power(b["actuator"], cmd)
                     b["plant"].step(dt)
-                    b["sep"].update(b["sensor"].read(b["plant"]))
+                    if emit:
+                        noisy = b["sensor"].read(b["plant"])
+                        b["sep"].update(noisy)
+                        true_v = b["plant"].get_state()["temperature"]
+                        dash.record(b["name"], true_v, noisy, u_now.get(b["name"], 0.0))
                 except Exception as e:
                     logging.getLogger("box").error("%s (device_id=%d) step 异常: %s",
                                                    b["name"], b["device_id"], e)
+            step_i += 1
             time.sleep(dt)
     except KeyboardInterrupt:
         pass
