@@ -10,7 +10,7 @@ dt_s = 0.1
 name = "box-1"
 device_id = 1
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 21.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t1", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t1" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h1", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep1", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep1", coil_address = 0 } }
@@ -18,7 +18,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-2"
 device_id = 2
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 22.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t2", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t2" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h2", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep2", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep2", coil_address = 0 } }
@@ -26,7 +26,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-3"
 device_id = 3
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 23.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t3", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t3" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h3", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep3", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep3", coil_address = 0 } }
@@ -34,7 +34,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-4"
 device_id = 4
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 24.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t4", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t4" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h4", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep4", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep4", coil_address = 0 } }
@@ -42,7 +42,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-5"
 device_id = 5
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 25.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t5", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t5" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h5", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep5", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep5", coil_address = 0 } }
@@ -50,7 +50,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-6"
 device_id = 6
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 26.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t6", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t6" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h6", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep6", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep6", coil_address = 0 } }
@@ -58,7 +58,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-7"
 device_id = 7
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 27.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t7", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t7" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h7", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep7", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep7", coil_address = 0 } }
@@ -66,7 +66,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-8"
 device_id = 8
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 28.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t8", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t8" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h8", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep8", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep8", coil_address = 0 } }
@@ -74,7 +74,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-9"
 device_id = 9
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 29.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t9", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t9" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h9", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep9", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep9", coil_address = 0 } }
@@ -82,7 +82,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-10"
 device_id = 10
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 30.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t10", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t10" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h10", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep10", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep10", coil_address = 0 } }
@@ -90,7 +90,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-11"
 device_id = 11
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 31.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t11", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t11" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h11", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep11", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep11", coil_address = 0 } }
@@ -98,7 +98,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-12"
 device_id = 12
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 32.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t12", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t12" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h12", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep12", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep12", coil_address = 0 } }
@@ -106,7 +106,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-13"
 device_id = 13
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 33.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t13", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t13" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h13", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep13", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep13", coil_address = 0 } }
@@ -114,7 +114,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-14"
 device_id = 14
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 34.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t14", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t14" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h14", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep14", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep14", coil_address = 0 } }
@@ -122,7 +122,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-15"
 device_id = 15
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 35.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t15", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t15" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h15", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep15", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep15", coil_address = 0 } }
@@ -130,7 +130,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-16"
 device_id = 16
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 36.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t16", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t16" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h16", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep16", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep16", coil_address = 0 } }
@@ -138,7 +138,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-17"
 device_id = 17
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 37.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t17", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t17" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h17", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep17", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep17", coil_address = 0 } }
@@ -146,7 +146,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-18"
 device_id = 18
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 38.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t18", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t18" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h18", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep18", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep18", coil_address = 0 } }
@@ -154,7 +154,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-19"
 device_id = 19
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 39.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t19", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t19" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h19", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep19", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep19", coil_address = 0 } }
@@ -162,7 +162,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-20"
 device_id = 20
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 40.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t20", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t20" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h20", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep20", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep20", coil_address = 0 } }
@@ -170,7 +170,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-21"
 device_id = 21
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 41.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t21", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t21" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h21", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep21", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep21", coil_address = 0 } }
@@ -178,7 +178,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-22"
 device_id = 22
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 42.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t22", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t22" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h22", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep22", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep22", coil_address = 0 } }
@@ -186,7 +186,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-23"
 device_id = 23
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 43.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t23", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t23" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h23", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep23", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep23", coil_address = 0 } }
@@ -194,7 +194,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-24"
 device_id = 24
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 44.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t24", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t24" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h24", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep24", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep24", coil_address = 0 } }
@@ -202,7 +202,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-25"
 device_id = 25
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 45.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t25", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t25" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h25", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep25", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep25", coil_address = 0 } }
@@ -210,7 +210,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-26"
 device_id = 26
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 46.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t26", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t26" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h26", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep26", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep26", coil_address = 0 } }
@@ -218,7 +218,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-27"
 device_id = 27
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 47.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t27", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t27" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h27", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep27", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep27", coil_address = 0 } }
@@ -226,7 +226,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-28"
 device_id = 28
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 48.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t28", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t28" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h28", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep28", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep28", coil_address = 0 } }
@@ -234,7 +234,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-29"
 device_id = 29
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 49.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t29", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t29" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h29", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep29", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep29", coil_address = 0 } }
@@ -242,7 +242,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-30"
 device_id = 30
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 50.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t30", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t30" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h30", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep30", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep30", coil_address = 0 } }
@@ -250,7 +250,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-31"
 device_id = 31
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 51.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t31", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t31" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h31", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep31", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep31", coil_address = 0 } }
@@ -258,7 +258,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-32"
 device_id = 32
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 52.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t32", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t32" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h32", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep32", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep32", coil_address = 0 } }
@@ -266,7 +266,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-33"
 device_id = 33
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 53.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t33", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t33" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h33", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep33", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep33", coil_address = 0 } }
@@ -274,7 +274,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-34"
 device_id = 34
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 54.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t34", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t34" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h34", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep34", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep34", coil_address = 0 } }
@@ -282,7 +282,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-35"
 device_id = 35
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 55.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t35", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t35" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h35", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep35", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep35", coil_address = 0 } }
@@ -290,7 +290,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-36"
 device_id = 36
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 56.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t36", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t36" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h36", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep36", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep36", coil_address = 0 } }
@@ -298,7 +298,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-37"
 device_id = 37
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 57.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t37", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t37" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h37", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep37", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep37", coil_address = 0 } }
@@ -306,7 +306,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-38"
 device_id = 38
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 58.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t38", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t38" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h38", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep38", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep38", coil_address = 0 } }
@@ -314,7 +314,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-39"
 device_id = 39
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 59.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t39", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t39" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h39", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep39", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep39", coil_address = 0 } }
@@ -322,7 +322,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-40"
 device_id = 40
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 60.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t40", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t40" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h40", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep40", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep40", coil_address = 0 } }
@@ -330,7 +330,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-41"
 device_id = 41
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 61.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t41", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t41" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h41", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep41", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep41", coil_address = 0 } }
@@ -338,7 +338,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-42"
 device_id = 42
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 62.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t42", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t42" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h42", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep42", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep42", coil_address = 0 } }
@@ -346,7 +346,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-43"
 device_id = 43
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 63.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t43", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t43" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h43", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep43", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep43", coil_address = 0 } }
@@ -354,7 +354,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-44"
 device_id = 44
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 64.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t44", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t44" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h44", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep44", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep44", coil_address = 0 } }
@@ -362,7 +362,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-45"
 device_id = 45
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 65.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t45", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t45" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h45", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep45", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep45", coil_address = 0 } }
@@ -370,7 +370,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-46"
 device_id = 46
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 66.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t46", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t46" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h46", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep46", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep46", coil_address = 0 } }
@@ -378,7 +378,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-47"
 device_id = 47
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 67.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t47", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t47" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h47", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep47", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep47", coil_address = 0 } }
@@ -386,7 +386,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-48"
 device_id = 48
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 68.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t48", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t48" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h48", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep48", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep48", coil_address = 0 } }
@@ -394,7 +394,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-49"
 device_id = 49
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 69.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t49", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t49" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h49", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep49", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep49", coil_address = 0 } }
@@ -402,7 +402,7 @@ actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "ae
 name = "box-50"
 device_id = 50
 plant             = { type = "thermal",                    params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 70.0 } }
-sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t50", noise_std = 0.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t50" } }
 actuator          = { type = "SimulatedHeaterActuator",    params = { name = "h50", channel = "heat_power", max_power = 200.0 } }
 sensor_endpoint   = { type = "ModbusSensorEndpoint",       params = { name = "tep50", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint",     params = { name = "aep50", coil_address = 0 } }

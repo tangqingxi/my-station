@@ -10,6 +10,7 @@ if str(ROOT) not in sys.path:
 import server.thermal_plant                       # noqa
 import server.simulated_temperature_sensor        # noqa
 import server.simulated_heater_actuator           # noqa
+import server.noise_sources                       # noqa
 import endpoints.modbus_sensor_endpoint           # noqa
 import endpoints.modbus_actuator_endpoint         # noqa
 import endpoints.mqtt_sensor_endpoint             # noqa

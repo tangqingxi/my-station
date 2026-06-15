@@ -7,8 +7,8 @@ from core.simulated_base_sensor import SimulatedBaseSensor
 
 @register("SimulatedTemperatureSensor")
 class SimulatedTemperatureSensor(SimulatedBaseSensor):
-    def __init__(self, name="t1", *, noise_std=0.0, seed=None):
-        super().__init__(name, noise_std=noise_std, seed=seed)
+    def __init__(self, name="t1", *, noise=None):
+        super().__init__(name, noise=noise)
 
     def read(self, plant: BasePlant) -> float:
         v = plant.get_state()["temperature"]

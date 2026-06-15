@@ -60,7 +60,7 @@ def box_block(did: int, with_noise: bool) -> str:
         rng = random.Random(BASE_SEED * 1000 + did)
         sensor_params = f'name = "t{did}", noise = {random_noise(rng, did)}'
     else:
-        sensor_params = f'name = "t{did}", noise_std = 0.0'
+        sensor_params = f'name = "t{did}"'
     return "\n".join([
         "[[box]]",
         f'name = "box-{did}"',

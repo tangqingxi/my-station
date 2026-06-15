@@ -17,7 +17,7 @@ def box_block(did: int) -> str:
     return "\n".join([
         "[[box]]", f'name = "box-{did}"', f"device_id = {did}",
         line("plant", "thermal", f"temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = {t_env:.1f}"),
-        line("sensor", "SimulatedTemperatureSensor", f'name = "t{did}", noise_std = 0.0'),
+        line("sensor", "SimulatedTemperatureSensor", f'name = "t{did}"'),
         line("actuator", "SimulatedHeaterActuator", f'name = "h{did}", channel = "heat_power", max_power = 200.0'),
         line("sensor_endpoint", "ModbusSensorEndpoint", f'name = "tep{did}", register_address = 0'),
         line("actuator_endpoint", "ModbusActuatorEndpoint", f'name = "aep{did}", coil_address = 0'),
