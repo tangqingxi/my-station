@@ -43,7 +43,13 @@ class MqttActuatorEndpoint(BaseActuatorEndpoint):
         client.on_connect = self._on_connect
         if self.role == "server":
             client.on_message = self._on_message
-        client.connect_async(self._broker_host, self._broker_port, keepalive=self._keepalive)
+        try:
+            client.connect(self._broker_host, self._broker_port, keepalive=self._keepalive)
+        except Exception as e:
+            raise RuntimeError(
+                f"{type(self).__name__} 连不上 MQTT broker "
+                f"{self._broker_host}:{self._broker_port}；请先启动 Mosquitto"
+            ) from e
         client.loop_start()
         self._client = client
         self._running = True

@@ -28,7 +28,7 @@ matplotlib.rcParams["axes.unicode_minus"] = False
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from matplotlib.widgets import Button
+from matplotlib.widgets import Button, Slider
 
 # 确保能 import 同级 core/ endpoints/ 包
 ROOT = Path(__file__).resolve().parent.parent
@@ -40,9 +40,11 @@ import endpoints.modbus_sensor_endpoint  # noqa: F401
 import endpoints.modbus_actuator_endpoint  # noqa: F401
 import endpoints.mqtt_sensor_endpoint  # noqa: F401
 import endpoints.mqtt_actuator_endpoint  # noqa: F401
+import client.signal_processors  # noqa: F401
 
 from core.factory import build
 from client.box_context import ClientBoxContext
+from client.filtered_sensor import EndpointSensor, FilteredSensor
 # 客户端自己保管温度箱的物理常识 · 不依赖 server 模块(client 是独立部署的)
 from client.thermal_info import compute_derived, format_model_params
 
@@ -69,9 +71,17 @@ def main(cfg_path: Path) -> None:
     actuator_ep.write(False)
     print(f"[client] 已连接 {host}:{port} · 控制 box-{device_id}")
 
+    sp_cfg = cfg.get("signal_processor")
+    chain = None
+    if sp_cfg is not None:
+        processor = build(sp_cfg)
+        dt_filter = float(cfg.get("loop", {}).get("dt_s", 0.5))
+        chain = FilteredSensor(EndpointSensor(sensor_ep), processor, dt_filter)
+
     # 绘图状态
     ts: list[int] = []
     temps: list[float] = []
+    temps_filt: list[float] = []
     heater_on = {"v": False}
 
     # 有参数面板时图做宽,右侧留 32% 给面板;否则窄图布局
@@ -81,7 +91,16 @@ def main(cfg_path: Path) -> None:
     else:
         fig, ax = plt.subplots(figsize=(8.0, 5.0))
         fig.subplots_adjust(left=0.12, right=0.95, top=0.90, bottom=0.18)
-    line, = ax.plot([], [], "b-")
+    if chain is not None:
+        line, = ax.plot([], [], "-", color="#bbbbbb", linewidth=0.8, label="noisy(原始)")
+        line_filt, = ax.plot(
+            [], [], "b-", linewidth=1.6,
+            label=f"filtered({type(chain.processor).__name__})",
+        )
+        ax.legend(loc="upper right", fontsize=8)
+    else:
+        line, = ax.plot([], [], "b-")
+        line_filt = None
     ax.set_xlabel("tick")
     ax.set_ylabel("温度 / C")
     # Y 轴起步给个默认范围 · 真实上下限在 on_tick 里随实测温度动态撑开(不依赖抄来的参数)
@@ -105,31 +124,69 @@ def main(cfg_path: Path) -> None:
 
     def on_tick(_frame):
         try:
-            t = sensor_ep.read()
+            if chain is not None:
+                filt = chain.read()
+                raw = chain.last_raw
+            else:
+                raw = sensor_ep.read()
+                filt = None
         except IOError as e:
             ax.set_title(f"box-{device_id} · 读温度失败: {e}")
-            return (line,)
+            return (line,) if line_filt is None else (line, line_filt)
+        if raw is None:
+            return (line,) if line_filt is None else (line, line_filt)
         ts.append(len(ts))
-        temps.append(t)
+        temps.append(raw)
         line.set_data(ts[-120:], temps[-120:])
+        if chain is not None and filt is not None:
+            temps_filt.append(filt)
+            line_filt.set_data(ts[-120:], temps_filt[-120:])
         if ts:
             ax.set_xlim(max(0, ts[-1] - 120), max(120, ts[-1]))
         # Y 轴随实测温度动态长高:温度快顶到上边就抬高上限 · 只升不降,绘图不抖
         ymin, ymax = ax.get_ylim()
-        if t + Y_PAD > ymax:
-            ax.set_ylim(ymin, t + 2 * Y_PAD)
+        y_probe = max(raw, filt if filt is not None else raw)
+        if y_probe + Y_PAD > ymax:
+            ax.set_ylim(ymin, y_probe + 2 * Y_PAD)
         ax.set_title(
-            f"box-{device_id}   温度 = {t:.1f} C   "
-            f"加热器 = {'ON' if heater_on['v'] else 'OFF'}"
+            f"box-{device_id}  noisy={raw:.1f}"
+            + (f" → filtered={filt:.1f}" if chain is not None and filt is not None else "")
+            + f"  加热器={'ON' if heater_on['v'] else 'OFF'}"
         )
-        return (line,)
+        return (line,) if line_filt is None else (line, line_filt)
 
     def on_toggle(_event):
         heater_on["v"] = not heater_on["v"]
         actuator_ep.write(heater_on["v"])
 
-    # 按钮位置:有参数面板时挪到右下角,没有时居中
-    if has_params:
+    # 去噪滑条：从 tunable_params() 反射出可调参数，业务层不硬编码滤波器类型。
+    sliders = []
+    tunable = chain.processor.tunable_params() if chain is not None else []
+    if tunable:
+        nyquist = 0.5 / float(cfg.get("loop", {}).get("dt_s", 0.5))
+        fig.subplots_adjust(bottom=0.12 + 0.07 * len(tunable))
+        for i, (tgt, name, spec, prefix) in enumerate(tunable):
+            sax = fig.add_axes((0.30, 0.04 + 0.07 * i, 0.40, 0.03))
+            lo, hi = spec["range"]
+            if spec.get("unit") == "Hz":
+                hi = max(lo, min(hi, nyquist))
+            init = max(lo, min(hi, getattr(tgt, name)))
+            lbl = prefix + spec.get("label", name) + (f" / {spec['unit']}" if spec.get("unit") else "")
+            sld = Slider(
+                sax, lbl, float(lo), float(hi),
+                valinit=init, valstep=spec.get("step"),
+            )
+
+            def _make(target, nm):
+                def _cb(val):
+                    target.set_params(**{nm: val})
+                    chain.processor.reset()
+                return _cb
+
+            sld.on_changed(_make(tgt, name))
+            sliders.append(sld)
+        bax = fig.add_axes((0.80, 0.04, 0.16, 0.05))
+    elif has_params:
         bax = fig.add_axes((0.72, 0.05, 0.22, 0.07))
     else:
         bax = fig.add_axes((0.40, 0.03, 0.20, 0.07))
