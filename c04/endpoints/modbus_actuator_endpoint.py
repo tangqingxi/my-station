@@ -1,6 +1,8 @@
 # endpoints/modbus_actuator_endpoint.py · 加热器开关 · 一类两用 · coil address=0, bool
 import queue
 
+from pymodbus.client import ModbusTcpClient
+
 from core.base_endpoint import BaseActuatorEndpoint
 from core.registry import register
 
@@ -22,15 +24,32 @@ class ModbusActuatorEndpoint(BaseActuatorEndpoint):
         self._check_role("client", "attach_client")
         self._client = client
 
+    def bind(self, ctx) -> None:
+        """服务端取本箱 SimDevice，客户端按 ctx 坐标自己建立 Modbus 连接。"""
+        self._device_id = int(ctx.device_id)
+        if self.role == "server":
+            self._slave = ctx.modbus_device()
+        else:
+            mc = ModbusTcpClient(ctx.host, port=ctx.port, timeout=2.0)
+            if not mc.connect():
+                raise RuntimeError(f"连不上 Modbus 服务器 {ctx.host}:{ctx.port}")
+            self._client = mc
+
     def start(self) -> None:
         if self.role == "server":
             self._register_to_slave()
         else:
             if self._client is None:
-                raise RuntimeError(f"{self.name!r} role='client' 但还没 attach ModbusTcpClient")
+                raise RuntimeError(f"{self.name!r} role='client' 但还没绑定 ModbusTcpClient")
         self._running = True
 
     def stop(self) -> None:
+        if self.role == "client" and self._client is not None:
+            try:
+                self._client.close()
+            except Exception:
+                pass
+            self._client = None
         self._running = False
 
     def poll_command(self):
@@ -54,7 +73,7 @@ class ModbusActuatorEndpoint(BaseActuatorEndpoint):
 
     def _register_to_slave(self) -> None:
         if self._slave is None:
-            raise RuntimeError(f"{self.name!r} role='server' 但没传 slave(ModbusSimDevice)")
+            raise RuntimeError(f"{self.name!r} role='server' 但没有绑定 slave(ModbusSimDevice)")
         from pymodbus.simulator import SimData
         from pymodbus.simulator.simdata import DataType
         coil = self._coil

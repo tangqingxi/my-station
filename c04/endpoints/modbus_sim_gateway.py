@@ -1,5 +1,5 @@
-# endpoints/modbus_sim_station.py · 一个 TCP 端口装多台 SimDevice · ★ v3 新增
-# 职责只两件:1) 管 TCP 协议栈生命周期  2) 管多台 SimDevice 容器(add_device/去重)
+# endpoints/modbus_sim_gateway.py · 一个 TCP 端口装多台 SimDevice
+# 职责只两件：1) 管 TCP 协议栈生命周期  2) 管多台 SimDevice 容器(add_device/去重)
 import asyncio
 import logging
 import socket
@@ -10,7 +10,7 @@ from .modbus_sim_device import ModbusSimDevice
 log = logging.getLogger(__name__)
 
 
-class ModbusSimStation:
+class ModbusSimGateway:
     def __init__(self, *, host: str = "0.0.0.0", port: int = 5020):
         self.host = str(host)
         self.port = int(port)
@@ -22,7 +22,7 @@ class ModbusSimStation:
 
     def add_device(self, dev: ModbusSimDevice) -> None:
         if self._started:
-            raise RuntimeError("station 已启动,不能再 add_device")
+            raise RuntimeError("gateway 已启动，不能再 add_device")
         if dev.device_id in {d.device_id for d in self._devices}:
             raise ValueError(
                 f"device_id={dev.device_id} 已被另一台 device 占用 "
@@ -38,7 +38,9 @@ class ModbusSimStation:
         if self._started:
             return
         if not self._devices:
-            raise RuntimeError("Station 还没 add_device · 至少需要一台 device 才能 start")
+            # 空网关是合法的闲置状态：没有 Modbus 箱时不绑端口，直接 no-op。
+            log.info("无 Modbus 从机，网关闲置(不绑端口)")
+            return
         probe = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             probe.bind((self.host, self.port))
@@ -82,14 +84,14 @@ class ModbusSimStation:
             except asyncio.CancelledError:
                 pass
             except Exception as e:
-                log.error("ModbusSimStation serve_forever 异常退出: %s", e)
+                log.error("ModbusSimGateway serve_forever 异常退出: %s", e)
 
         def _th():
             asyncio.set_event_loop(loop)
             try:
                 loop.run_until_complete(_run())
             except Exception as e:
-                log.debug("station loop exited: %s", e)
+                log.debug("gateway loop exited: %s", e)
             finally:
                 try:
                     pending = asyncio.all_tasks(loop)
@@ -112,15 +114,24 @@ class ModbusSimStation:
                 except Exception:
                     pass
 
-        self._thread = threading.Thread(target=_th, daemon=True, name="modbus-sim-station")
+        self._thread = threading.Thread(target=_th, daemon=True, name="modbus-sim-gateway")
         self._thread.start()
         if not ready.wait(timeout=4.0):
-            raise RuntimeError(f"ModbusSimStation {self.host}:{self.port} 启动超时")
+            raise RuntimeError(f"ModbusSimGateway {self.host}:{self.port} 启动超时")
         if startup_error:
             raise startup_error[0]
         self._started = True
-        log.info("ModbusSimStation listening %s:%d (devices: %s)",
+        log.info("ModbusSimGateway listening %s:%d (devices: %s)",
                  self.host, self.port, [d.device_id for d in self._devices])
+
+    def status_line(self) -> str:
+        """返回网关自己的运行状态，供 server banner 打印。"""
+        if self._devices:
+            return (
+                f"[ ModbusSimGateway listening {self.host}:{self.port} "
+                f"· {len(self._devices)} 台从机 ]"
+            )
+        return "[ ModbusSimGateway 闲置 · 无 Modbus 从机 ]"
 
     def stop(self) -> None:
         if not self._started:

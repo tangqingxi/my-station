@@ -15,21 +15,26 @@ import endpoints.modbus_actuator_endpoint         # noqa
 
 from core.factory import build, build_plant, build_sensor, build_actuator
 from server.thermal_plant import format_box_summary
-from endpoints.modbus_sim_device import ModbusSimDevice
-from endpoints.modbus_sim_station import ModbusSimStation
+from endpoints.modbus_sim_gateway import ModbusSimGateway
+from server.box_context import ServerBoxContext
 
 
-def assemble_box(box_cfg: dict) -> dict:
+def assemble_box(box_cfg: dict, gateway) -> dict:
+    """端点统一 build → bind → start；装配层不再认识具体传输。"""
     plant    = build_plant(box_cfg["plant"])
     sensor   = build_sensor(box_cfg["sensor"])
     actuator = build_actuator(box_cfg["actuator"])
-    sim_dev = ModbusSimDevice(device_id=box_cfg["device_id"])
-    sep = build(box_cfg["sensor_endpoint"],   role="server", slave=sim_dev, device_id=sim_dev.device_id)
-    aep = build(box_cfg["actuator_endpoint"], role="server", slave=sim_dev, device_id=sim_dev.device_id)
+
+    ctx = ServerBoxContext(box_cfg["device_id"], gateway)
+    sep = build(box_cfg["sensor_endpoint"],   role="server")
+    aep = build(box_cfg["actuator_endpoint"], role="server")
+    sep.bind(ctx)
+    aep.bind(ctx)
     sep.start(); aep.start()
+
     return {"name": box_cfg["name"], "device_id": box_cfg["device_id"], "plant": plant,
             "sensor": sensor, "actuator": actuator, "sep": sep, "aep": aep,
-            "sim_dev": sim_dev, "_cfg": box_cfg}
+            "uses_modbus": ctx.uses_modbus, "_cfg": box_cfg}
 
 
 def main(cfg_path: Path) -> None:
@@ -38,21 +43,20 @@ def main(cfg_path: Path) -> None:
     cfg = tomllib.loads(cfg_path.read_text(encoding="utf-8"))
 
     sc = cfg["server"]
-    station = ModbusSimStation(host=sc.get("bind", "0.0.0.0"), port=sc.get("port", 5020))
+    gateway = ModbusSimGateway(host=sc.get("bind", "0.0.0.0"), port=sc.get("port", 5020))
 
     boxes = []
     for box_cfg in cfg.get("box", []):
-        b = assemble_box(box_cfg)
-        station.add_device(b["sim_dev"])
+        b = assemble_box(box_cfg, gateway)
         boxes.append(b)
     if not boxes:
         raise RuntimeError("config.toml 里没找到任何 [[box]],至少需要 1 台")
 
-    station.start()
+    gateway.start()
 
     dt = float(cfg.get("loop", {}).get("dt_s", 0.1))
     print("=" * 70)
-    print(f"[ ModbusSimStation listening {station.host}:{station.port} ]")
+    print(gateway.status_line())
     for b in boxes:
         print(format_box_summary(b["_cfg"]))
     print("=" * 70)
@@ -84,9 +88,13 @@ def main(cfg_path: Path) -> None:
     finally:
         for b in boxes:
             b["sep"].stop(); b["aep"].stop()
-        station.stop()
+        gateway.stop()
         print("[server] 已退出")
 
 
 if __name__ == "__main__":
-    main(Path(__file__).resolve().parent.parent / "config.toml")
+    root = Path(__file__).resolve().parent.parent
+    cfg_path = Path(sys.argv[1]) if len(sys.argv) > 1 else root / "config.toml"
+    if not cfg_path.is_absolute():
+        cfg_path = root / cfg_path
+    main(cfg_path)

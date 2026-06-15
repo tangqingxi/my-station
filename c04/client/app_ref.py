@@ -29,7 +29,6 @@ matplotlib.rcParams["axes.unicode_minus"] = False
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import Button
-from pymodbus.client import ModbusTcpClient
 
 # 确保能 import 同级 core/ endpoints/ 包
 ROOT = Path(__file__).resolve().parent.parent
@@ -41,43 +40,32 @@ import endpoints.modbus_sensor_endpoint  # noqa: F401
 import endpoints.modbus_actuator_endpoint  # noqa: F401
 
 from core.factory import build
+from client.box_context import ClientBoxContext
 # 客户端自己保管温度箱的物理常识 · 不依赖 server 模块(client 是独立部署的)
 from client.thermal_info import compute_derived, format_model_params
 
 
-def main() -> None:
-    cfg = tomllib.loads((ROOT / "client_config.toml").read_text(encoding="utf-8"))
+def main(cfg_path: Path) -> None:
+    cfg = tomllib.loads(cfg_path.read_text(encoding="utf-8"))
     host = cfg["server"]["host"]
     port = cfg["server"]["port"]
     box_cfg = cfg["box"]
     device_id = int(box_cfg["device_id"])
-    reg_addr = int(box_cfg.get("register_address", 0))
-    coil_addr = int(box_cfg.get("coil_address", 0))
     # 可选:学生从 server banner 抄过来的物理参数,有则显示面板
     has_params = "plant" in box_cfg and "actuator" in box_cfg
 
-    # 一个共享的 ModbusTcpClient · 两个 endpoint 都用它
-    modbus_client = ModbusTcpClient(host, port=port, timeout=2.0)
-    if not modbus_client.connect():
-        raise RuntimeError(f"连不上 Modbus 服务器 {host}:{port}")
-    print(f"[client] 已连接 {host}:{port} · 控制 box-{device_id}")
-
-    # 反射建 endpoint · role='client' · 关键:device_id 把请求路由到正确的箱
-    sensor_ep = build(
-        {"type": "ModbusSensorEndpoint",
-         "params": {"name": f"sep-{device_id}", "register_address": reg_addr}},
-        role="client", client=modbus_client, device_id=device_id,
-    )
-    actuator_ep = build(
-        {"type": "ModbusActuatorEndpoint",
-         "params": {"name": f"aep-{device_id}", "coil_address": coil_addr}},
-        role="client", client=modbus_client, device_id=device_id,
-    )
+    # 统一 build → bind(ctx) → start：换传输只改 client_config 的 type 和 params。
+    ctx = ClientBoxContext(device_id, host, port)
+    sensor_ep = build(box_cfg["sensor_endpoint"], role="client")
+    actuator_ep = build(box_cfg["actuator_endpoint"], role="client")
+    sensor_ep.bind(ctx)
+    actuator_ep.bind(ctx)
     sensor_ep.start()
     actuator_ep.start()
 
     # 启动时显式把这台箱的加热器置 OFF · UI 跟 server 真实状态对齐
     actuator_ep.write(False)
+    print(f"[client] 已连接 {host}:{port} · 控制 box-{device_id}")
 
     # 绘图状态
     ts: list[int] = []
@@ -150,8 +138,10 @@ def main() -> None:
     plt.show()
     sensor_ep.stop()
     actuator_ep.stop()
-    modbus_client.close()
 
 
 if __name__ == "__main__":
-    main()
+    cfg_path = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "client_config.toml"
+    if not cfg_path.is_absolute():
+        cfg_path = ROOT / cfg_path
+    main(cfg_path)

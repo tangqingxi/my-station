@@ -83,7 +83,10 @@ def format_model_params(cfg: dict) -> str:
 def format_box_summary(box_cfg: dict) -> str:
     """server banner 用的单行摘要 · 给一台箱写一行."""
     d = compute_derived(box_cfg)
+    ep_type = box_cfg.get("sensor_endpoint", {}).get("type", "?")
+    transport = ep_type.replace("SensorEndpoint", "") or "?"
     return (
         f"  {box_cfg['name']:<8} device_id={box_cfg['device_id']:<3} "
+        f"ep={transport:<7} "
         f"c_heat={d['c_heat']:>6.1f}  tau={d['tau']:>6.1f}s  T_ss={d['t_ss']:>6.1f}C"
     )
