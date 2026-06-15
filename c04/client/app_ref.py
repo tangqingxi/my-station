@@ -85,6 +85,13 @@ def main(cfg_path: Path) -> None:
     sub_buf: deque[float] = deque(maxlen=oversample)
     subtick = {"n": 0}
     denoise = chain is not None or oversample > 1
+    filtered_ep = (
+        build(box_cfg["filtered_endpoint"], role="client")
+        if denoise and "filtered_endpoint" in box_cfg else None
+    )
+    if filtered_ep is not None:
+        filtered_ep.bind(ctx)
+        filtered_ep.start()
 
     def _median(buf) -> float:
         s = sorted(buf)
@@ -162,9 +169,11 @@ def main(cfg_path: Path) -> None:
         ts.append(len(ts))
         temps.append(raw)
         line.set_data(ts[-120:], temps[-120:])
-        if chain is not None and filt is not None:
+        if denoise and filt is not None:
             temps_filt.append(filt)
             line_filt.set_data(ts[-120:], temps_filt[-120:])
+            if filtered_ep is not None:
+                filtered_ep.write(filt)
         if ts:
             ax.set_xlim(max(0, ts[-1] - 120), max(120, ts[-1]))
         # Y 轴随实测温度动态长高:温度快顶到上边就抬高上限 · 只升不降,绘图不抖
@@ -174,7 +183,7 @@ def main(cfg_path: Path) -> None:
             ax.set_ylim(ymin, y_probe + 2 * Y_PAD)
         ax.set_title(
             f"box-{device_id}  noisy={raw:.1f}"
-            + (f" → filtered={filt:.1f}" if chain is not None and filt is not None else "")
+            + (f" → filtered={filt:.1f}" if denoise and filt is not None else "")
             + f"  加热器={'ON' if heater_on['v'] else 'OFF'}"
         )
         return (line,) if line_filt is None else (line, line_filt)
@@ -219,6 +228,8 @@ def main(cfg_path: Path) -> None:
 
     ani = FuncAnimation(fig, on_tick, interval=max(1, int(sub_dt * 1000)), cache_frame_data=False)
     plt.show()
+    if filtered_ep is not None:
+        filtered_ep.stop()
     sensor_ep.stop()
     actuator_ep.stop()
 

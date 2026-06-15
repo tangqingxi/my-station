@@ -11,6 +11,7 @@ import server.thermal_plant                       # noqa
 import server.simulated_temperature_sensor        # noqa
 import server.simulated_heater_actuator           # noqa
 import server.noise_sources                       # noqa
+import core.excitation                            # noqa
 import endpoints.modbus_sensor_endpoint           # noqa
 import endpoints.modbus_actuator_endpoint         # noqa
 import endpoints.mqtt_sensor_endpoint             # noqa
@@ -18,6 +19,7 @@ import endpoints.mqtt_actuator_endpoint           # noqa
 
 from core.factory import build, build_plant, build_sensor, build_actuator
 from server.box_dashboard import BoxDashboard, serve as serve_dashboard
+from server.score_collector import ScoreCollector
 from server.thermal_plant import format_box_summary
 from endpoints.modbus_sim_gateway import ModbusSimGateway
 from server.box_context import ServerBoxContext
@@ -36,9 +38,16 @@ def assemble_box(box_cfg: dict, gateway) -> dict:
     aep.bind(ctx)
     sep.start(); aep.start()
 
+    excitation = build(box_cfg["excitation"]) if "excitation" in box_cfg else None
+    filtered_ep = build(box_cfg["filtered_endpoint"], role="server") if "filtered_endpoint" in box_cfg else None
+    if filtered_ep is not None:
+        filtered_ep.bind(ctx)
+        filtered_ep.start()
+
     return {"name": box_cfg["name"], "device_id": box_cfg["device_id"], "plant": plant,
             "sensor": sensor, "actuator": actuator, "sep": sep, "aep": aep,
-            "uses_modbus": ctx.uses_modbus, "_cfg": box_cfg}
+            "uses_modbus": ctx.uses_modbus, "excitation": excitation,
+            "filtered_ep": filtered_ep, "_cfg": box_cfg}
 
 
 def _command_power(actuator, cmd) -> float:
@@ -75,7 +84,18 @@ def main(cfg_path: Path) -> None:
     emit_every = max(1, round(emit_dt / dt))
     sample_dt = float(cfg.get("loop", {}).get("sample_dt_s", emit_dt))
     sample_every = max(1, round(sample_dt / dt))
-    dash = BoxDashboard(station_id="my-station")
+    scored = any(b["excitation"] is not None for b in boxes)
+    collector = None
+    if scored:
+        score_cfg = cfg.get("score", {})
+        collector = ScoreCollector(
+            station="my-station",
+            broker_host=score_cfg.get("broker_host", "127.0.0.1"),
+            broker_port=int(score_cfg.get("broker_port", 1883)),
+            dt=emit_dt,
+        )
+        collector.start()
+    dash = BoxDashboard(station_id="my-station", collector=collector)
     dash_host = sc.get("dashboard_host", "127.0.0.1")
     dash_port = int(sc.get("dashboard_port", 5400))
     serve_dashboard(dash, host=dash_host, port=dash_port)
@@ -108,10 +128,16 @@ def main(cfg_path: Path) -> None:
             emit = (step_i % emit_every == 0)
             for b in boxes:
                 try:
-                    cmd = b["aep"].poll_command()
-                    if cmd is not None:
-                        b["actuator"].apply(b["plant"], cmd)
-                        u_now[b["name"]] = _command_power(b["actuator"], cmd)
+                    u = None
+                    if b["excitation"] is not None:
+                        u = b["excitation"].value(step_i * dt)
+                        b["actuator"].apply(b["plant"], u)
+                        u_now[b["name"]] = u
+                    else:
+                        cmd = b["aep"].poll_command()
+                        if cmd is not None:
+                            b["actuator"].apply(b["plant"], cmd)
+                            u_now[b["name"]] = _command_power(b["actuator"], cmd)
                     b["plant"].step(dt)
                     if sample:
                         noisy = b["sensor"].read(b["plant"])
@@ -123,6 +149,12 @@ def main(cfg_path: Path) -> None:
                         if noisy0 is None:
                             noisy0 = b["sensor"].read(b["plant"])
                         dash.record(b["name"], true_v, noisy0, u_now.get(b["name"], 0.0))
+                        if collector is not None and b["excitation"] is not None:
+                            collector.feed(b["name"], true_v, noisy0, drive=u)
+                            if b["filtered_ep"] is not None:
+                                fb = b["filtered_ep"].poll_command()
+                                if fb is not None:
+                                    collector.record_filtered(b["name"], float(fb))
                 except Exception as e:
                     logging.getLogger("box").error("%s (device_id=%d) step 异常: %s",
                                                    b["name"], b["device_id"], e)
@@ -131,8 +163,12 @@ def main(cfg_path: Path) -> None:
     except KeyboardInterrupt:
         pass
     finally:
+        if collector is not None:
+            collector.stop()
         for b in boxes:
             b["sep"].stop(); b["aep"].stop()
+            if b["filtered_ep"] is not None:
+                b["filtered_ep"].stop()
         gateway.stop()
         print("[server] 已退出")
 

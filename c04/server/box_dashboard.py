@@ -16,8 +16,9 @@ MAXLEN = 600
 class BoxDashboard:
     """收集每台箱的 true/noisy/u 历史，供 Flask 看板查询。"""
 
-    def __init__(self, station_id: str = "my-station"):
+    def __init__(self, station_id: str = "my-station", collector=None):
         self.station_id = station_id
+        self._collector = collector
         self._tick: dict[str, int] = {}
         self._t: dict[str, deque] = {}
         self._true: dict[str, deque] = {}

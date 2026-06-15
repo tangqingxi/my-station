@@ -10,6 +10,7 @@ oversample = 5
 device_id = 1
 sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep", topic = "my-station/sensor/box-1" } }
 actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep", topic = "my-station/actuator/box-1/cmd" } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep", topic = "my-station/score/box-1/filtered" } }
 plant    = { params = { c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 21.0 } }
 actuator = { params = { max_power = 200.0 } }
 

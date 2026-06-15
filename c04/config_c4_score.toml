@@ -1,0 +1,511 @@
+# config_c4_score.toml · C4 演示 server 配置 · 50 箱 · MQTT 传输 · 逐箱随机叠加噪声 · 方波激励打分
+# 由 tools/gen_c4_config.py 生成；要改规模或噪声，请改脚本后重跑。
+[server]
+bind = "0.0.0.0"
+port = 5020
+
+[loop]
+dt_s = 0.1
+emit_dt_s = 0.5
+sample_dt_s = 0.1
+
+[[box]]
+name = "box-1"
+device_id = 1
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 21.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t1", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.114, amplitude = 2.4, seed = 1 } }, { type = "SineNoise", params = { amplitude = 0.7, freq_hz = 1.5, phase = 0.35, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.21, seed = 1 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h1", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep1", topic = "my-station/sensor/box-1" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep1", topic = "my-station/actuator/box-1/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep1", topic = "my-station/score/box-1/filtered" } }
+[[box]]
+name = "box-2"
+device_id = 2
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 22.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t2", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.93, freq_hz = 0.5, phase = 3.84, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.101, amplitude = 2.3, seed = 2 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h2", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep2", topic = "my-station/sensor/box-2" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep2", topic = "my-station/actuator/box-2/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep2", topic = "my-station/score/box-2/filtered" } }
+[[box]]
+name = "box-3"
+device_id = 3
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 23.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t3", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.111, amplitude = 5.9, seed = 3 } }, { type = "GaussianNoise", params = { std = 0.68, seed = 3 } }, { type = "SineNoise", params = { amplitude = 0.68, freq_hz = 1.5, phase = 2.9, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h3", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep3", topic = "my-station/sensor/box-3" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep3", topic = "my-station/actuator/box-3/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep3", topic = "my-station/score/box-3/filtered" } }
+[[box]]
+name = "box-4"
+device_id = 4
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 24.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t4", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.84, freq_hz = 1.0, phase = 1.13, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.29, seed = 4 } }, { type = "ImpulseNoise", params = { prob = 0.12, amplitude = 5.3, seed = 4 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h4", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep4", topic = "my-station/sensor/box-4" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep4", topic = "my-station/actuator/box-4/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep4", topic = "my-station/score/box-4/filtered" } }
+[[box]]
+name = "box-5"
+device_id = 5
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 25.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t5", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.47, freq_hz = 1.5, phase = 4.85, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.59, seed = 5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h5", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep5", topic = "my-station/sensor/box-5" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep5", topic = "my-station/actuator/box-5/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep5", topic = "my-station/score/box-5/filtered" } }
+[[box]]
+name = "box-6"
+device_id = 6
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 26.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t6", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.073, amplitude = 4.0, seed = 6 } }, { type = "SineNoise", params = { amplitude = 1.12, freq_hz = 0.5, phase = 4.1, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h6", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep6", topic = "my-station/sensor/box-6" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep6", topic = "my-station/actuator/box-6/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep6", topic = "my-station/score/box-6/filtered" } }
+[[box]]
+name = "box-7"
+device_id = 7
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 27.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t7", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.38, freq_hz = 0.5, phase = 0.12, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.117, amplitude = 2.4, seed = 7 } }, { type = "GaussianNoise", params = { std = 0.42, seed = 7 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h7", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep7", topic = "my-station/sensor/box-7" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep7", topic = "my-station/actuator/box-7/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep7", topic = "my-station/score/box-7/filtered" } }
+[[box]]
+name = "box-8"
+device_id = 8
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 28.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t8", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.59, seed = 8 } }, { type = "ImpulseNoise", params = { prob = 0.081, amplitude = 5.5, seed = 8 } }, { type = "SineNoise", params = { amplitude = 0.89, freq_hz = 1.0, phase = 4.26, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h8", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep8", topic = "my-station/sensor/box-8" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep8", topic = "my-station/actuator/box-8/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep8", topic = "my-station/score/box-8/filtered" } }
+[[box]]
+name = "box-9"
+device_id = 9
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 29.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t9", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.36, seed = 9 } }, { type = "ImpulseNoise", params = { prob = 0.078, amplitude = 2.2, seed = 9 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h9", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep9", topic = "my-station/sensor/box-9" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep9", topic = "my-station/actuator/box-9/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep9", topic = "my-station/score/box-9/filtered" } }
+[[box]]
+name = "box-10"
+device_id = 10
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 30.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t10", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.67, freq_hz = 1.0, phase = 5.53, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.22, seed = 10 } }, { type = "ImpulseNoise", params = { prob = 0.093, amplitude = 4.6, seed = 10 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h10", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep10", topic = "my-station/sensor/box-10" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep10", topic = "my-station/actuator/box-10/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep10", topic = "my-station/score/box-10/filtered" } }
+[[box]]
+name = "box-11"
+device_id = 11
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 31.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t11", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.49, seed = 11 } }, { type = "SineNoise", params = { amplitude = 1.14, freq_hz = 1.0, phase = 5.94, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.054, amplitude = 2.9, seed = 11 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h11", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep11", topic = "my-station/sensor/box-11" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep11", topic = "my-station/actuator/box-11/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep11", topic = "my-station/score/box-11/filtered" } }
+[[box]]
+name = "box-12"
+device_id = 12
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 32.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t12", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.38, seed = 12 } }, { type = "ImpulseNoise", params = { prob = 0.056, amplitude = 3.9, seed = 12 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h12", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep12", topic = "my-station/sensor/box-12" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep12", topic = "my-station/actuator/box-12/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep12", topic = "my-station/score/box-12/filtered" } }
+[[box]]
+name = "box-13"
+device_id = 13
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 33.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t13", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.072, amplitude = 4.2, seed = 13 } }, { type = "SineNoise", params = { amplitude = 0.97, freq_hz = 0.5, phase = 3.56, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h13", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep13", topic = "my-station/sensor/box-13" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep13", topic = "my-station/actuator/box-13/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep13", topic = "my-station/score/box-13/filtered" } }
+[[box]]
+name = "box-14"
+device_id = 14
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 34.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t14", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.107, amplitude = 5.8, seed = 14 } }, { type = "SineNoise", params = { amplitude = 0.72, freq_hz = 1.0, phase = 3.79, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h14", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep14", topic = "my-station/sensor/box-14" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep14", topic = "my-station/actuator/box-14/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep14", topic = "my-station/score/box-14/filtered" } }
+[[box]]
+name = "box-15"
+device_id = 15
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 35.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t15", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.055, amplitude = 4.0, seed = 15 } }, { type = "SineNoise", params = { amplitude = 0.51, freq_hz = 0.5, phase = 3.16, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h15", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep15", topic = "my-station/sensor/box-15" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep15", topic = "my-station/actuator/box-15/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep15", topic = "my-station/score/box-15/filtered" } }
+[[box]]
+name = "box-16"
+device_id = 16
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 36.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t16", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.49, seed = 16 } }, { type = "ImpulseNoise", params = { prob = 0.086, amplitude = 5.3, seed = 16 } }, { type = "SineNoise", params = { amplitude = 1.14, freq_hz = 2.0, phase = 0.85, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h16", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep16", topic = "my-station/sensor/box-16" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep16", topic = "my-station/actuator/box-16/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep16", topic = "my-station/score/box-16/filtered" } }
+[[box]]
+name = "box-17"
+device_id = 17
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 37.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t17", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 1.09, freq_hz = 0.5, phase = 2.88, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.094, amplitude = 4.0, seed = 17 } }, { type = "GaussianNoise", params = { std = 0.29, seed = 17 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h17", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep17", topic = "my-station/sensor/box-17" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep17", topic = "my-station/actuator/box-17/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep17", topic = "my-station/score/box-17/filtered" } }
+[[box]]
+name = "box-18"
+device_id = 18
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 38.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t18", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.076, amplitude = 4.6, seed = 18 } }, { type = "SineNoise", params = { amplitude = 0.52, freq_hz = 2.0, phase = 2.94, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h18", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep18", topic = "my-station/sensor/box-18" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep18", topic = "my-station/actuator/box-18/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep18", topic = "my-station/score/box-18/filtered" } }
+[[box]]
+name = "box-19"
+device_id = 19
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 39.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t19", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 1.15, freq_hz = 1.0, phase = 0.58, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.053, amplitude = 3.7, seed = 19 } }, { type = "GaussianNoise", params = { std = 0.57, seed = 19 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h19", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep19", topic = "my-station/sensor/box-19" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep19", topic = "my-station/actuator/box-19/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep19", topic = "my-station/score/box-19/filtered" } }
+[[box]]
+name = "box-20"
+device_id = 20
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 40.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t20", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.74, seed = 20 } }, { type = "ImpulseNoise", params = { prob = 0.087, amplitude = 3.4, seed = 20 } }, { type = "SineNoise", params = { amplitude = 0.67, freq_hz = 0.5, phase = 1.38, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h20", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep20", topic = "my-station/sensor/box-20" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep20", topic = "my-station/actuator/box-20/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep20", topic = "my-station/score/box-20/filtered" } }
+[[box]]
+name = "box-21"
+device_id = 21
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 41.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t21", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.6, seed = 21 } }, { type = "ImpulseNoise", params = { prob = 0.079, amplitude = 3.9, seed = 21 } }, { type = "SineNoise", params = { amplitude = 0.41, freq_hz = 2.0, phase = 1.31, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h21", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep21", topic = "my-station/sensor/box-21" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep21", topic = "my-station/actuator/box-21/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep21", topic = "my-station/score/box-21/filtered" } }
+[[box]]
+name = "box-22"
+device_id = 22
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 42.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t22", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.85, freq_hz = 2.0, phase = 0.51, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.71, seed = 22 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h22", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep22", topic = "my-station/sensor/box-22" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep22", topic = "my-station/actuator/box-22/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep22", topic = "my-station/score/box-22/filtered" } }
+[[box]]
+name = "box-23"
+device_id = 23
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 43.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t23", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.08, amplitude = 5.2, seed = 23 } }, { type = "GaussianNoise", params = { std = 0.32, seed = 23 } }, { type = "SineNoise", params = { amplitude = 0.31, freq_hz = 0.5, phase = 1.08, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h23", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep23", topic = "my-station/sensor/box-23" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep23", topic = "my-station/actuator/box-23/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep23", topic = "my-station/score/box-23/filtered" } }
+[[box]]
+name = "box-24"
+device_id = 24
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 44.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t24", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.62, freq_hz = 0.5, phase = 1.21, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.28, seed = 24 } }, { type = "ImpulseNoise", params = { prob = 0.09, amplitude = 3.6, seed = 24 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h24", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep24", topic = "my-station/sensor/box-24" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep24", topic = "my-station/actuator/box-24/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep24", topic = "my-station/score/box-24/filtered" } }
+[[box]]
+name = "box-25"
+device_id = 25
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 45.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t25", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.112, amplitude = 4.0, seed = 25 } }, { type = "GaussianNoise", params = { std = 0.51, seed = 25 } }, { type = "SineNoise", params = { amplitude = 0.67, freq_hz = 2.0, phase = 2.21, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h25", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep25", topic = "my-station/sensor/box-25" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep25", topic = "my-station/actuator/box-25/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep25", topic = "my-station/score/box-25/filtered" } }
+[[box]]
+name = "box-26"
+device_id = 26
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 46.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t26", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.94, freq_hz = 0.5, phase = 6.11, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.38, seed = 26 } }, { type = "ImpulseNoise", params = { prob = 0.096, amplitude = 5.9, seed = 26 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h26", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep26", topic = "my-station/sensor/box-26" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep26", topic = "my-station/actuator/box-26/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep26", topic = "my-station/score/box-26/filtered" } }
+[[box]]
+name = "box-27"
+device_id = 27
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 47.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t27", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.77, seed = 27 } }, { type = "ImpulseNoise", params = { prob = 0.075, amplitude = 3.5, seed = 27 } }, { type = "SineNoise", params = { amplitude = 0.89, freq_hz = 1.5, phase = 3.3, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h27", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep27", topic = "my-station/sensor/box-27" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep27", topic = "my-station/actuator/box-27/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep27", topic = "my-station/score/box-27/filtered" } }
+[[box]]
+name = "box-28"
+device_id = 28
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 48.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t28", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.46, seed = 28 } }, { type = "SineNoise", params = { amplitude = 0.65, freq_hz = 0.5, phase = 3.85, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.062, amplitude = 4.6, seed = 28 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h28", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep28", topic = "my-station/sensor/box-28" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep28", topic = "my-station/actuator/box-28/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep28", topic = "my-station/score/box-28/filtered" } }
+[[box]]
+name = "box-29"
+device_id = 29
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 49.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t29", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.087, amplitude = 5.3, seed = 29 } }, { type = "SineNoise", params = { amplitude = 0.68, freq_hz = 2.0, phase = 0.82, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.47, seed = 29 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h29", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep29", topic = "my-station/sensor/box-29" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep29", topic = "my-station/actuator/box-29/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep29", topic = "my-station/score/box-29/filtered" } }
+[[box]]
+name = "box-30"
+device_id = 30
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 50.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t30", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.26, seed = 30 } }, { type = "ImpulseNoise", params = { prob = 0.107, amplitude = 3.0, seed = 30 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h30", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep30", topic = "my-station/sensor/box-30" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep30", topic = "my-station/actuator/box-30/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep30", topic = "my-station/score/box-30/filtered" } }
+[[box]]
+name = "box-31"
+device_id = 31
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 51.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t31", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.91, freq_hz = 0.5, phase = 5.09, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.57, seed = 31 } }, { type = "ImpulseNoise", params = { prob = 0.071, amplitude = 5.6, seed = 31 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h31", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep31", topic = "my-station/sensor/box-31" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep31", topic = "my-station/actuator/box-31/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep31", topic = "my-station/score/box-31/filtered" } }
+[[box]]
+name = "box-32"
+device_id = 32
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 52.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t32", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.114, amplitude = 4.5, seed = 32 } }, { type = "SineNoise", params = { amplitude = 1.17, freq_hz = 1.0, phase = 4.92, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.62, seed = 32 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h32", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep32", topic = "my-station/sensor/box-32" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep32", topic = "my-station/actuator/box-32/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep32", topic = "my-station/score/box-32/filtered" } }
+[[box]]
+name = "box-33"
+device_id = 33
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 53.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t33", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.79, freq_hz = 2.0, phase = 2.23, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.79, seed = 33 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h33", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep33", topic = "my-station/sensor/box-33" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep33", topic = "my-station/actuator/box-33/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep33", topic = "my-station/score/box-33/filtered" } }
+[[box]]
+name = "box-34"
+device_id = 34
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 54.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t34", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.67, seed = 34 } }, { type = "ImpulseNoise", params = { prob = 0.087, amplitude = 4.7, seed = 34 } }, { type = "SineNoise", params = { amplitude = 0.63, freq_hz = 1.0, phase = 4.18, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h34", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep34", topic = "my-station/sensor/box-34" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep34", topic = "my-station/actuator/box-34/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep34", topic = "my-station/score/box-34/filtered" } }
+[[box]]
+name = "box-35"
+device_id = 35
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 55.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t35", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.66, seed = 35 } }, { type = "ImpulseNoise", params = { prob = 0.069, amplitude = 2.9, seed = 35 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h35", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep35", topic = "my-station/sensor/box-35" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep35", topic = "my-station/actuator/box-35/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep35", topic = "my-station/score/box-35/filtered" } }
+[[box]]
+name = "box-36"
+device_id = 36
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 56.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t36", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.079, amplitude = 3.1, seed = 36 } }, { type = "GaussianNoise", params = { std = 0.37, seed = 36 } }, { type = "SineNoise", params = { amplitude = 0.79, freq_hz = 1.5, phase = 5.01, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h36", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep36", topic = "my-station/sensor/box-36" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep36", topic = "my-station/actuator/box-36/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep36", topic = "my-station/score/box-36/filtered" } }
+[[box]]
+name = "box-37"
+device_id = 37
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 57.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t37", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.08, amplitude = 5.7, seed = 37 } }, { type = "SineNoise", params = { amplitude = 0.72, freq_hz = 1.5, phase = 6.06, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h37", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep37", topic = "my-station/sensor/box-37" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep37", topic = "my-station/actuator/box-37/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep37", topic = "my-station/score/box-37/filtered" } }
+[[box]]
+name = "box-38"
+device_id = 38
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 58.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t38", noise = { type = "CompositeNoise", params = { sources = [ { type = "ImpulseNoise", params = { prob = 0.089, amplitude = 5.6, seed = 38 } }, { type = "GaussianNoise", params = { std = 0.44, seed = 38 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h38", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep38", topic = "my-station/sensor/box-38" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep38", topic = "my-station/actuator/box-38/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep38", topic = "my-station/score/box-38/filtered" } }
+[[box]]
+name = "box-39"
+device_id = 39
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 59.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t39", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 1.13, freq_hz = 0.5, phase = 4.16, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.066, amplitude = 2.6, seed = 39 } }, { type = "GaussianNoise", params = { std = 0.72, seed = 39 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h39", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep39", topic = "my-station/sensor/box-39" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep39", topic = "my-station/actuator/box-39/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep39", topic = "my-station/score/box-39/filtered" } }
+[[box]]
+name = "box-40"
+device_id = 40
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 60.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t40", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 1.13, freq_hz = 1.0, phase = 2.94, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.081, amplitude = 4.7, seed = 40 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h40", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep40", topic = "my-station/sensor/box-40" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep40", topic = "my-station/actuator/box-40/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep40", topic = "my-station/score/box-40/filtered" } }
+[[box]]
+name = "box-41"
+device_id = 41
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 61.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t41", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.23, seed = 41 } }, { type = "ImpulseNoise", params = { prob = 0.097, amplitude = 5.4, seed = 41 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h41", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep41", topic = "my-station/sensor/box-41" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep41", topic = "my-station/actuator/box-41/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep41", topic = "my-station/score/box-41/filtered" } }
+[[box]]
+name = "box-42"
+device_id = 42
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 62.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t42", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.71, seed = 42 } }, { type = "ImpulseNoise", params = { prob = 0.116, amplitude = 4.8, seed = 42 } }, { type = "SineNoise", params = { amplitude = 0.36, freq_hz = 1.5, phase = 2.72, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h42", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep42", topic = "my-station/sensor/box-42" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep42", topic = "my-station/actuator/box-42/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep42", topic = "my-station/score/box-42/filtered" } }
+[[box]]
+name = "box-43"
+device_id = 43
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 63.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t43", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.49, seed = 43 } }, { type = "SineNoise", params = { amplitude = 0.9, freq_hz = 1.0, phase = 0.85, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h43", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep43", topic = "my-station/sensor/box-43" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep43", topic = "my-station/actuator/box-43/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep43", topic = "my-station/score/box-43/filtered" } }
+[[box]]
+name = "box-44"
+device_id = 44
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 64.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t44", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.54, seed = 44 } }, { type = "ImpulseNoise", params = { prob = 0.099, amplitude = 5.9, seed = 44 } }, { type = "SineNoise", params = { amplitude = 0.74, freq_hz = 1.0, phase = 0.52, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h44", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep44", topic = "my-station/sensor/box-44" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep44", topic = "my-station/actuator/box-44/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep44", topic = "my-station/score/box-44/filtered" } }
+[[box]]
+name = "box-45"
+device_id = 45
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 65.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t45", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.62, seed = 45 } }, { type = "SineNoise", params = { amplitude = 0.8, freq_hz = 1.5, phase = 4.19, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.112, amplitude = 6.0, seed = 45 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h45", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep45", topic = "my-station/sensor/box-45" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep45", topic = "my-station/actuator/box-45/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep45", topic = "my-station/score/box-45/filtered" } }
+[[box]]
+name = "box-46"
+device_id = 46
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 66.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t46", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.75, freq_hz = 0.5, phase = 3.53, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.54, seed = 46 } }, { type = "ImpulseNoise", params = { prob = 0.114, amplitude = 3.3, seed = 46 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h46", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep46", topic = "my-station/sensor/box-46" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep46", topic = "my-station/actuator/box-46/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 52.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep46", topic = "my-station/score/box-46/filtered" } }
+[[box]]
+name = "box-47"
+device_id = 47
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 67.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t47", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.75, freq_hz = 0.5, phase = 1.37, dt = 0.5 } }, { type = "GaussianNoise", params = { std = 0.25, seed = 47 } }, { type = "ImpulseNoise", params = { prob = 0.092, amplitude = 5.7, seed = 47 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h47", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep47", topic = "my-station/sensor/box-47" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep47", topic = "my-station/actuator/box-47/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 56.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep47", topic = "my-station/score/box-47/filtered" } }
+[[box]]
+name = "box-48"
+device_id = 48
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 68.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t48", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.32, freq_hz = 1.0, phase = 2.22, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.072, amplitude = 5.2, seed = 48 } }, { type = "GaussianNoise", params = { std = 0.51, seed = 48 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h48", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep48", topic = "my-station/sensor/box-48" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep48", topic = "my-station/actuator/box-48/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 60.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep48", topic = "my-station/score/box-48/filtered" } }
+[[box]]
+name = "box-49"
+device_id = 49
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 69.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t49", noise = { type = "CompositeNoise", params = { sources = [ { type = "GaussianNoise", params = { std = 0.63, seed = 49 } }, { type = "ImpulseNoise", params = { prob = 0.076, amplitude = 4.7, seed = 49 } }, { type = "SineNoise", params = { amplitude = 0.82, freq_hz = 2.0, phase = 3.87, dt = 0.5 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h49", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep49", topic = "my-station/sensor/box-49" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep49", topic = "my-station/actuator/box-49/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 64.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep49", topic = "my-station/score/box-49/filtered" } }
+[[box]]
+name = "box-50"
+device_id = 50
+plant             = { type = "thermal", params = { temp = 25.0, c_heat = 15.0, eta = 0.95, r_th = 0.40, t_env = 70.0 } }
+sensor            = { type = "SimulatedTemperatureSensor", params = { name = "t50", noise = { type = "CompositeNoise", params = { sources = [ { type = "SineNoise", params = { amplitude = 0.52, freq_hz = 0.5, phase = 3.71, dt = 0.5 } }, { type = "ImpulseNoise", params = { prob = 0.066, amplitude = 4.1, seed = 50 } }, { type = "GaussianNoise", params = { std = 0.52, seed = 50 } } ] } } } }
+actuator          = { type = "SimulatedHeaterActuator", params = { name = "h50", channel = "heat_power", max_power = 200.0 } }
+sensor_endpoint   = { type = "MqttSensorEndpoint",   params = { name = "sep50", topic = "my-station/sensor/box-50" } }
+actuator_endpoint = { type = "MqttActuatorEndpoint", params = { name = "aep50", topic = "my-station/actuator/box-50/cmd" } }
+excitation        = { type = "SquareWave", params = { period = 48.0, duty = 0.5, high = 110.0, low = 90.0 } }
+filtered_endpoint = { type = "MqttUplinkEndpoint", params = { name = "fbep50", topic = "my-station/score/box-50/filtered" } }

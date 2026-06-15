@@ -1,6 +1,7 @@
 # tools/gen_c4_config.py · 生成 C4 演示用 server 配置 · N 箱 · MQTT 传输 · 可选逐箱随机噪声
 #   uv run python tools/gen_c4_config.py            → config_c4.toml
 #   uv run python tools/gen_c4_config.py --noise    → config_c4_noisy.toml
+#   uv run python tools/gen_c4_config.py --score    → config_c4_score.toml
 import random
 import sys
 from pathlib import Path
@@ -11,6 +12,7 @@ EMIT_DT = 0.5
 ROOT = Path(__file__).resolve().parent.parent
 OUT_NONOISE = ROOT / "config_c4.toml"
 OUT_NOISY = ROOT / "config_c4_noisy.toml"
+OUT_SCORE = ROOT / "config_c4_score.toml"
 
 HEADER = """# {out} · C4 演示 server 配置 · {n} 箱 · MQTT 传输{tag}
 # 由 tools/gen_c4_config.py 生成；要改规模或噪声，请改脚本后重跑。
@@ -55,14 +57,14 @@ def random_noise(rng: random.Random, did: int) -> str:
     return src("CompositeNoise", {"sources": "[ " + ", ".join(sources) + " ]"})
 
 
-def box_block(did: int, with_noise: bool) -> str:
+def box_block(did: int, with_noise: bool, with_score: bool = False) -> str:
     t_env = float(20 + did)
     if with_noise:
         rng = random.Random(BASE_SEED * 1000 + did)
         sensor_params = f'name = "t{did}", noise = {random_noise(rng, did)}'
     else:
         sensor_params = f'name = "t{did}"'
-    return "\n".join([
+    lines = [
         "[[box]]",
         f'name = "box-{did}"',
         f"device_id = {did}",
@@ -71,17 +73,38 @@ def box_block(did: int, with_noise: bool) -> str:
         f'actuator          = {{ type = "SimulatedHeaterActuator", params = {{ name = "h{did}", channel = "heat_power", max_power = 200.0 }} }}',
         f'sensor_endpoint   = {{ type = "MqttSensorEndpoint",   params = {{ name = "sep{did}", topic = "my-station/sensor/box-{did}" }} }}',
         f'actuator_endpoint = {{ type = "MqttActuatorEndpoint", params = {{ name = "aep{did}", topic = "my-station/actuator/box-{did}/cmd" }} }}',
-    ])
+    ]
+    if with_score:
+        period = 48 + (did % 5) * 4
+        # high/low 用连续功率档，让真值温和起伏，避免满功率阶跃把平滑滤波全扣成负分。
+        lines.append(
+            f'excitation        = {{ type = "SquareWave", params = {{ period = {period}.0, duty = 0.5, high = 110.0, low = 90.0 }} }}'
+        )
+        # 每箱单独一个 filtered 上行 topic，服务端轮询收客户端去噪回传。
+        lines.append(
+            f'filtered_endpoint = {{ type = "MqttUplinkEndpoint", params = {{ name = "fbep{did}", topic = "my-station/score/box-{did}/filtered" }} }}'
+        )
+    return "\n".join(lines)
 
 
 def main() -> None:
-    with_noise = "--noise" in sys.argv[1:]
-    out = OUT_NOISY if with_noise else OUT_NONOISE
-    tag = " · 逐箱随机叠加噪声" if with_noise else " · 无噪"
+    args = sys.argv[1:]
+    with_score = "--score" in args
+    with_noise = with_score or ("--noise" in args)
+    if with_score:
+        out = OUT_SCORE
+    elif with_noise:
+        out = OUT_NOISY
+    else:
+        out = OUT_NONOISE
+    if with_score:
+        tag = " · 逐箱随机叠加噪声 · 方波激励打分"
+    else:
+        tag = " · 逐箱随机叠加噪声" if with_noise else " · 无噪"
     parts = [HEADER.format(out=out.name, n=N, tag=tag, emit=EMIT_DT)]
-    parts += [box_block(d, with_noise) for d in range(1, N + 1)]
+    parts += [box_block(d, with_noise, with_score) for d in range(1, N + 1)]
     out.write_text("\n".join(parts) + "\n", encoding="utf-8")
-    print(f"已生成 {out.name} · {N} 箱 · MQTT · {'逐箱随机叠加噪声' if with_noise else '无噪'}")
+    print(f"已生成 {out.name} · {N} 箱 · MQTT · {tag.strip(' ·')}")
 
 
 if __name__ == "__main__":

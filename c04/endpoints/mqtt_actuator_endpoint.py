@@ -116,3 +116,10 @@ class MqttActuatorEndpoint(BaseActuatorEndpoint):
             except queue.Empty:
                 pass
             self._cmd_q.put_nowait(v)
+
+
+@register("MqttUplinkEndpoint")
+class MqttUplinkEndpoint(MqttActuatorEndpoint):
+    """通用 MQTT 上行端点：客户端 write，服务端 poll_command。"""
+
+    pass
