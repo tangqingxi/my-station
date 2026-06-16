@@ -1,10 +1,10 @@
 # client_config.toml · 你自己改这份 · 不再共享 server 的 config.toml
 [server]
 host = "127.0.0.1"     # 中心改成老师板书的 IP
-port = 5020
+port = 1883
 
 [box]
-device_id = 1            # ← 改这一行选你要控制哪台箱
+device_id = 8            # ← 改这一行选你要控制哪台箱
 # 默认 Modbus 传输；换传输时只改下面两行的 type 和 params
 sensor_endpoint   = { type = "ModbusSensorEndpoint",   params = { name = "sep", register_address = 0 } }
 actuator_endpoint = { type = "ModbusActuatorEndpoint", params = { name = "aep", coil_address = 0 } }
